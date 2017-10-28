@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.ConvertStrategies
+namespace ImageConverter.ResizeStrategies
 {
-    class ToGIFStrategy : IStrategy
+    public class SkewStrategy : IStrategy
     {
-        public void Process()
+        public void Start(string srcPath, string destPath)
         {
             throw new NotImplementedException();
         }

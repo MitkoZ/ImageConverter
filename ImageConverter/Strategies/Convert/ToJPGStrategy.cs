@@ -9,7 +9,7 @@ namespace ImageConverter.ConvertStrategies
 {
     public class ToJPGStrategy : IStrategy
     {
-        public void Process()
+        public void Start(string srcPath, string destPath)
         {
             throw new NotImplementedException();
         }
