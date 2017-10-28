@@ -9,7 +9,8 @@ namespace ImageConverter.ResizeStrategies
 {
     class CropStrategy : IStrategy
     {
-        public void Process()
+
+        public void Process(string sourcePath, string destinationPath)
         {
             throw new NotImplementedException();
         }

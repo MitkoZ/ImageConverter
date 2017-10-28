@@ -1,17 +1,18 @@
 ﻿using ImageConverter.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ImageConverter.ConvertStrategies
 {
-    class ToPNGStrategy : IStrategy
+    public class ToPNGStrategy : BaseToStrategy, IStrategy
     {
-        public void Process()
+        public void Process(string sourcePath, string destinationPath)
         {
-            throw new NotImplementedException();
+            base.Process(sourcePath, destinationPath, ImageFormat.Png);
         }
     }
 }
