@@ -1,30 +1,27 @@
-﻿using ImageConverter.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using ImageConverter.Interfaces;
+using System.Security;
+using System.IO;
 
 namespace ImageConverter
 {
     public class ImageContext : IContext
     {
-        private IStrategy strategy;
-        private string sourcePath;
-        private string destinationPath;
-        private string type;
+        internal IStrategy Strategy { get; set; }
+        internal string SourcePath { get; set; }
+        internal string DestinationPath { get; set; }
+        internal string Type { get; set; }
         public ImageContext(IStrategy strategy, string sourcePath, string destinationPath, string type)
         {
-            this.strategy = strategy;
-            this.sourcePath = sourcePath;
-            this.destinationPath = destinationPath;
-            this.type = type;
+            this.Strategy = strategy;
+            this.SourcePath = sourcePath;
+            this.DestinationPath = destinationPath;
+            this.Type = type;
         }
 
         public void ExecuteStrategy()
         {
-            strategy.Process(sourcePath, destinationPath);
+            Strategy.Start(this.SourcePath, this.DestinationPath);
         }
     }
 }

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace ImageConverter.ConvertStrategies
+namespace ImageConverter.Strategies.Convert
 {
     public class ToGIFStrategy : BaseToStrategy, IStrategy
     {
-        public void Process(string sourcePath, string destinationPath)
+        public void Start(string srcPath, string destPath)
         {
-            base.Process(sourcePath, destinationPath, ImageFormat.Gif);
+            base.Start(srcPath, destPath, ImageFormat.Gif);
         }
     }
 }

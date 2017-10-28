@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.ConvertStrategies
+namespace ImageConverter.Strategies.Convert
 {
     public class ToJPGStrategy : BaseToStrategy, IStrategy
     {
-        public void Process(string sourcePath, string destinationPath)
+        public void Start(string srcPath, string destPath)
         {
-            base.Process(sourcePath, destinationPath, ImageFormat.Jpeg);
+            base.Start(srcPath, destPath, ImageFormat.Jpeg);
         }
     }
 }

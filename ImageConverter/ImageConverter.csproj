@@ -41,16 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConvertStrategies\BaseToStrategy.cs" />
-    <Compile Include="ConvertStrategies\ToGIFStrategy.cs" />
-    <Compile Include="ConvertStrategies\ToJPGStrategy.cs" />
-    <Compile Include="ConvertStrategies\ToPNGStrategy.cs" />
+    <Compile Include="Strategies\Convert\BaseToStrategy.cs" />
+    <Compile Include="Exceptions\InvalidCropDimensionsException.cs" />
+    <Compile Include="Interfaces\IStrategy.cs" />
+    <Compile Include="Strategies\Convert\ToGIFStrategy.cs" />
+    <Compile Include="Strategies\Convert\ToJPGStrategy.cs" />
+    <Compile Include="Strategies\Convert\ToPNGStrategy.cs" />
     <Compile Include="ImageContext.cs" />
     <Compile Include="Interfaces\IContext.cs" />
-    <Compile Include="Interfaces\IStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResizeStrategies\CropStrategy.cs" />
-    <Compile Include="ResizeStrategies\SkewStrategy.cs" />
+    <Compile Include="Strategies\Resize\CropStrategy.cs" />
+    <Compile Include="Strategies\Resize\SkewStrategy.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

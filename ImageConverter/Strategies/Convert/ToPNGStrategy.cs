@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.ConvertStrategies
+namespace ImageConverter.Strategies.Convert
 {
     public class ToPNGStrategy : BaseToStrategy, IStrategy
     {
-        public void Process(string sourcePath, string destinationPath)
+        public void Start(string srcPath, string destPath)
         {
-            base.Process(sourcePath, destinationPath, ImageFormat.Png);
+            base.Start(srcPath, destPath, ImageFormat.Png);
         }
     }
 }
