@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ImageConverter.ConvertStrategies
 {
-    class ToPNGStrategy : IStrategy
+    public class ToPNGStrategy : IStrategy
     {
-        public void Process()
+        public void Start(string srcPath, string destPath)
         {
             throw new NotImplementedException();
         }
