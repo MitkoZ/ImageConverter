@@ -4,7 +4,7 @@ using System.IO;
 using System;
 using ImageConverter.Exceptions;
 
-namespace ImageConverter.ResizeStrategies
+namespace ImageConverter.Strategies.Resize
 {
     public class CropStrategy : IStrategy
     {
@@ -25,10 +25,10 @@ namespace ImageConverter.ResizeStrategies
                 Bitmap bitmap = new Bitmap(ifs);
                 Rectangle rectangle = Rectangle.FromLTRB(this.left, this.top, this.right, this.bottom);
                 ValidateCropDimensions(rectangle, bitmap);
-                Bitmap newBitmap = bitmap.Clone(rectangle, bitmap.PixelFormat);
+                Bitmap croppedBitmap = bitmap.Clone(rectangle, bitmap.PixelFormat);
                 using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
                 {
-                    newBitmap.Save(ofs, bitmap.RawFormat);
+                    croppedBitmap.Save(ofs, bitmap.RawFormat);
                 }
             }
 

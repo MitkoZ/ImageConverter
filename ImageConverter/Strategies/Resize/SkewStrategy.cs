@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.ResizeStrategies
+namespace ImageConverter.Strategies.Resize
 {
     public class SkewStrategy : IStrategy
     {

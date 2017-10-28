@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Strategies\Convert\BaseToStrategy.cs" />
     <Compile Include="Exceptions\InvalidCropDimensionsException.cs" />
     <Compile Include="Interfaces\IStrategy.cs" />
     <Compile Include="Strategies\Convert\ToGIFStrategy.cs" />
