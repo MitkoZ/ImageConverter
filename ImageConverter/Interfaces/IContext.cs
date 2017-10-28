@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ImageConverter.Interfaces
 {
-    interface IContext
+    internal interface IContext
     {
         void ExecuteStrategy();
     }

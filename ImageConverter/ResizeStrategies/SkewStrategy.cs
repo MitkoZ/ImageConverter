@@ -9,7 +9,7 @@ namespace ImageConverter.ResizeStrategies
 {
     class SkewStrategy : IStrategy
     {
-        public void Process()
+        public void Process(string sourcePath, string destinationPath)
         {
             throw new NotImplementedException();
         }
