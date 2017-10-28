@@ -14,13 +14,18 @@ namespace ImageConverter.ConvertStrategies
     {
         internal void Process(string sourcePath, string destinationPath, ImageFormat imageFormat)
         {
-            System.Drawing.ImageConverter imageConverter = new System.Drawing.ImageConverter();
             FileStream inputFileStream = new FileStream(sourcePath, FileMode.Open);
-            Image outputImage = Image.FromStream(inputFileStream);
             FileStream outputFileStream = new FileStream(destinationPath, FileMode.CreateNew);
-            outputImage.Save(outputFileStream, imageFormat);
-            inputFileStream.Close();
-            outputFileStream.Close();
+            using (inputFileStream)
+            {
+                using (outputFileStream)
+                {
+                    System.Drawing.ImageConverter imageConverter = new System.Drawing.ImageConverter();
+                    Image outputImage = Image.FromStream(inputFileStream);
+                    outputImage.Save(outputFileStream, imageFormat);
+                }
+            }
+
         }
     }
 }
