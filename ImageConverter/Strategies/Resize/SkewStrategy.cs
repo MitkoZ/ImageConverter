@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.ResizeStrategies
+namespace ImageConverter.Strategies.Resize
 {
-    class CropStrategy : IStrategy
+    public class SkewStrategy : IStrategy
     {
-
-        public void Process(string sourcePath, string destinationPath)
+        public void Start(string srcPath, string destPath)
         {
             throw new NotImplementedException();
         }
