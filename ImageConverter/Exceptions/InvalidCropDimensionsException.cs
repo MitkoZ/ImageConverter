@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ImageConverter.Exceptions
 {
-
     [Serializable]
     public class InvalidCropDimensionsException : Exception
     {

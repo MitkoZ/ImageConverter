@@ -7,10 +7,10 @@ namespace ImageConverter
 {
     public class ImageContext : IContext
     {
-        public IStrategy Strategy { get; internal set; }
-        public string SourcePath { get; internal set; }
-        public string DestinationPath { get; internal set; }
-        public string Type { get; internal set; }
+        internal IStrategy Strategy { get; set; }
+        internal string SourcePath { get; set; }
+        internal string DestinationPath { get; set; }
+        internal string Type { get; set; }
         public ImageContext(IStrategy strategy, string sourcePath, string destinationPath, string type)
         {
             this.Strategy = strategy;
