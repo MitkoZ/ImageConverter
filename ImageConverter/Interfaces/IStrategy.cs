@@ -8,6 +8,6 @@ namespace ImageConverter.Interfaces
 {
     public interface IStrategy
     {
-        void Process();
+        void Process(string sourcePath, string destinationPath);
     }
 }

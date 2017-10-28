@@ -10,20 +10,21 @@ namespace ImageConverter
 {
     public class ImageContext : IContext
     {
-        public IStrategy Strategy { get; set; }
-        public string SourcePath { get; }
-        public string DestinationPath { get; }
-        public string Type { get; set; }
+        private IStrategy strategy;
+        private string sourcePath;
+        private string destinationPath;
+        private string type;
         public ImageContext(IStrategy strategy, string sourcePath, string destinationPath, string type)
         {
-            this.Strategy = strategy;
-            this.SourcePath = sourcePath;
-            this.DestinationPath = destinationPath;
+            this.strategy = strategy;
+            this.sourcePath = sourcePath;
+            this.destinationPath = destinationPath;
+            this.type = type;
         }
 
         public void ExecuteStrategy()
         {
-            Strategy.Process();
+            strategy.Process(sourcePath, destinationPath);
         }
     }
 }
