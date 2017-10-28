@@ -14,11 +14,9 @@ namespace ImageConverter.ConvertStrategies
     {
         internal void Process(string sourcePath, string destinationPath, ImageFormat imageFormat)
         {
-            FileStream inputFileStream = new FileStream(sourcePath, FileMode.Open);
-            FileStream outputFileStream = new FileStream(destinationPath, FileMode.CreateNew);
-            using (inputFileStream)
+            using (FileStream inputFileStream = new FileStream(sourcePath, FileMode.Open))
             {
-                using (outputFileStream)
+                using (FileStream outputFileStream = new FileStream(destinationPath, FileMode.CreateNew))
                 {
                     System.Drawing.ImageConverter imageConverter = new System.Drawing.ImageConverter();
                     Image outputImage = Image.FromStream(inputFileStream);
