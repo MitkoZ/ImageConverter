@@ -18,7 +18,6 @@ namespace ImageConverter.Strategies.Convert
             {
                 using (FileStream outputFileStream = new FileStream(destinationPath, FileMode.CreateNew))
                 {
-                    System.Drawing.ImageConverter imageConverter = new System.Drawing.ImageConverter();
                     Image outputImage = Image.FromStream(inputFileStream);
                     outputImage.Save(outputFileStream, imageFormat);
                 }
