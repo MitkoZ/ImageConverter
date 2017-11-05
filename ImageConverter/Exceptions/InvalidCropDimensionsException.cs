@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ImageConverter.Exceptions
 {
     [Serializable]
-    public class InvalidCropDimensionsException : Exception
+    public class InvalidCropDimensionsException : ArgumentOutOfRangeException
     {
         public InvalidCropDimensionsException() { }
         public InvalidCropDimensionsException(string message) : base(message) { }
