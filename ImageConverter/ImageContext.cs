@@ -2,26 +2,53 @@
 using ImageConverter.Interfaces;
 using System.Security;
 using System.IO;
+using ImageConverter.Enums;
+using ImageConverter.Strategies.Convert;
+using ImageConverter.Strategies.Resize;
+using System.ComponentModel;
 
 namespace ImageConverter
 {
     public class ImageContext : IContext
     {
-        internal IStrategy Strategy { get; set; }
-        internal string SourcePath { get; set; }
-        internal string DestinationPath { get; set; }
-        internal string Type { get; set; }
-        public ImageContext(IStrategy strategy, string sourcePath, string destinationPath, string type)
+        private IStrategy strategy;
+        private string sourcePath;
+        private string destinationPath;
+        private ImageOperation imageOperation;
+        public ImageContext(Parameter parameter)
         {
-            this.Strategy = strategy;
-            this.SourcePath = sourcePath;
-            this.DestinationPath = destinationPath;
-            this.Type = type;
+            this.sourcePath = parameter.SourcePath;
+            this.destinationPath = parameter.DestinationPath;
+            this.imageOperation = parameter.ImageOperation;
+
+            switch (imageOperation)
+            {
+                case ImageOperation.ConvertToPNG:
+                    this.strategy = new ToPNGStrategy();
+                    break;
+                case ImageOperation.ConvertToJPG:
+                    this.strategy = new ToJPGStrategy();
+                    break;
+                case ImageOperation.ConvertToGIF:
+                    this.strategy = new ToGIFStrategy();
+                    break;
+                case ImageOperation.Crop:
+                    this.strategy = new CropStrategy(parameter);
+                    break;
+                case ImageOperation.Skew:
+                    this.strategy = new SkewStrategy(parameter);
+                    break;
+                case ImageOperation.KeepAspect:
+                    this.strategy = new KeepAspectStrategy(parameter);
+                    break;
+                default:
+                    throw new InvalidEnumArgumentException("Reached default - this should not happen");//TODO: Custom exception
+            }
         }
 
         public void ExecuteStrategy()
         {
-            Strategy.Start(this.SourcePath, this.DestinationPath);
+            strategy.Start(this.sourcePath, this.destinationPath);
         }
     }
 }

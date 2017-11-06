@@ -41,7 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Strategies\Convert\BaseToStrategy.cs" />
+    <Compile Include="Enums\ImageOperation.cs" />
+    <Compile Include="Parameter.cs" />
     <Compile Include="Exceptions\InvalidCropDimensionsException.cs" />
     <Compile Include="Interfaces\IStrategy.cs" />
     <Compile Include="Strategies\Convert\ToGIFStrategy.cs" />
@@ -53,7 +54,6 @@
     <Compile Include="Strategies\Resize\BaseResizeStrategy.cs" />
     <Compile Include="Strategies\Resize\CropStrategy.cs" />
     <Compile Include="Strategies\Resize\KeepAspectStrategy.cs" />
-    <Compile Include="Strategies\Resize\ResizeStrategy.cs" />
     <Compile Include="Strategies\Resize\SkewStrategy.cs" />
   </ItemGroup>
   <ItemGroup />

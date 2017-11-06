@@ -10,11 +10,18 @@ using System.Threading.Tasks;
 
 namespace ImageConverter.Strategies.Convert
 {
-    public class ToJPGStrategy : BaseToStrategy, IStrategy
+    internal class ToJPGStrategy : IStrategy
     {
-        public void Start(string srcPath, string destPath)
+        public void Start(string sourcePath, string destinationPath)
         {
-            base.Start(srcPath, destPath, ImageFormat.Jpeg);
+            using (FileStream inputFileStream = new FileStream(sourcePath, FileMode.Open))
+            {
+                using (FileStream outputFileStream = new FileStream(destinationPath, FileMode.CreateNew))
+                {
+                    Image outputImage = Image.FromStream(inputFileStream);
+                    outputImage.Save(outputFileStream, ImageFormat.Jpeg);
+                }
+            }
         }
     }
 }
