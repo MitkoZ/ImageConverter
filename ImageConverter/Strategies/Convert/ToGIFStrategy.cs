@@ -10,11 +10,18 @@ using System.Drawing.Imaging;
 
 namespace ImageConverter.Strategies.Convert
 {
-    public class ToGIFStrategy : BaseToStrategy, IStrategy
+    internal class ToGIFStrategy : IStrategy
     {
-        public void Start(string srcPath, string destPath)
+        public void Start(string sourcePath, string destinationPath)
         {
-            base.Start(srcPath, destPath, ImageFormat.Gif);
+            using (FileStream inputFileStream = new FileStream(sourcePath, FileMode.Open))
+            {
+                using (FileStream outputFileStream = new FileStream(destinationPath, FileMode.CreateNew))
+                {
+                    Image outputImage = Image.FromStream(inputFileStream);
+                    outputImage.Save(outputFileStream, ImageFormat.Gif);
+                }
+            }
         }
     }
 }
