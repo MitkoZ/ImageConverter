@@ -6,16 +6,16 @@ using ImageConverter.Exceptions;
 
 namespace ImageConverter.Strategies.Resize
 {
-    public class CropStrategy : IStrategy
+    internal class CropStrategy : IStrategy
     {
-        private int left, top, right, bottom;
+        private int x, y, width, height;
 
-        public CropStrategy(int left, int top, int right, int bottom)
+        public CropStrategy(Parameter parameter)
         {
-            this.left = left;
-            this.top = top;
-            this.right = right;
-            this.bottom = bottom;
+            this.x = parameter.X;
+            this.y = parameter.Y;
+            this.width = parameter.Width;
+            this.height = parameter.Height;
         }
 
         public void Start(string srcPath, string destPath)
@@ -23,7 +23,7 @@ namespace ImageConverter.Strategies.Resize
             using (FileStream ifs = new FileStream(srcPath, FileMode.Open))
             {
                 Bitmap bitmap = new Bitmap(ifs);
-                Rectangle rectangle = Rectangle.FromLTRB(this.left, this.top, this.right, this.bottom);
+                Rectangle rectangle = new Rectangle(this.x, this.y, this.width, this.height);
                 ValidateCropDimensions(rectangle, bitmap);
                 Bitmap croppedBitmap = bitmap.Clone(rectangle, bitmap.PixelFormat);
                 using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
@@ -31,34 +31,33 @@ namespace ImageConverter.Strategies.Resize
                     croppedBitmap.Save(ofs, bitmap.RawFormat);
                 }
             }
-
         }
 
         private void ValidateCropDimensions(Rectangle rectangle, Bitmap bitmap)
         {
-            if (rectangle.Left < 0)
+            if (rectangle.X < 0)
             {
-                throw new InvalidCropDimensionsException("The left coordinate should not be outside of the image and/or less than zero");
+                throw new InvalidCropDimensionsException("The X coordinate should not be outside of the image and/or less than zero");
             }
-            else if (rectangle.Left >= rectangle.Right)
+            else if (rectangle.X + width > bitmap.Width)
             {
-                throw new InvalidCropDimensionsException("The left coordinate should not be greater than or equal to the right coordinate");
+                throw new InvalidCropDimensionsException("The X coordinate summed with the passed width is greater than the image's width.");
             }
-            else if (rectangle.Top < 0)
+            else if (rectangle.Y < 0)
             {
-                throw new InvalidCropDimensionsException("The top coordinate should not be outside of the image and/or less than zero");
+                throw new InvalidCropDimensionsException("The Y coordinate should not be outside of the image and/or less than zero");
             }
-            else if (rectangle.Top >= rectangle.Bottom)
+            else if (rectangle.Y + height > bitmap.Height)
             {
-                throw new InvalidCropDimensionsException("The top coordinate should not be greater than or equal to the bottom coordinate");
+                throw new InvalidCropDimensionsException("The Y coordinate summed with the passed height is greater than the image's height.");
             }
-            else if (rectangle.Bottom > bitmap.Height)
+            else if (rectangle.X > bitmap.Width)
             {
-                throw new InvalidCropDimensionsException("The bottom coordinate should not be greater than the height of the image");
+                throw new InvalidCropDimensionsException("The X coordinate should not be outside of the image's dimensions");
             }
-            else if (rectangle.Right > bitmap.Width)
+            else if (rectangle.Y > bitmap.Height)
             {
-                throw new InvalidCropDimensionsException("The right coordinate should not be greater than the size of the image");
+                throw new InvalidCropDimensionsException("The Y coordinate should not be outside of the image's dimensions");
             }
         }
     }
