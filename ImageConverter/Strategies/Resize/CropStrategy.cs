@@ -10,27 +10,79 @@ namespace ImageConverter.Strategies.Resize
     {
         private int x, y, width, height;
 
-        public CropStrategy(Parameter parameter)
+        public CropStrategy(int x, int y, int width, int height)
         {
-            this.x = parameter.X;
-            this.y = parameter.Y;
-            this.width = parameter.Width;
-            this.height = parameter.Height;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
         }
 
         public void Start(string srcPath, string destPath)
         {
-            using (FileStream ifs = new FileStream(srcPath, FileMode.Open))
+            try
             {
-                Bitmap bitmap = new Bitmap(ifs);
-                Rectangle rectangle = new Rectangle(this.x, this.y, this.width, this.height);
-                ValidateCropDimensions(rectangle, bitmap);
-                Bitmap croppedBitmap = bitmap.Clone(rectangle, bitmap.PixelFormat);
-                using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
+                using (FileStream ifs = new FileStream(srcPath, FileMode.Open))
                 {
-                    croppedBitmap.Save(ofs, bitmap.RawFormat);
+                    Bitmap bitmap = new Bitmap(ifs);
+                    Rectangle rectangle = new Rectangle(this.x, this.y, this.width, this.height);
+                    ValidateCropDimensions(rectangle, bitmap);
+                    Bitmap croppedBitmap = bitmap.Clone(rectangle, bitmap.PixelFormat);
+                    using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
+                    {
+                        croppedBitmap.Save(ofs, bitmap.RawFormat);
+                    }
                 }
             }
+            catch (ArgumentNullException argNullEx)
+            {
+                throw new CustomArgumentNullException(argNullEx.Message, argNullEx);
+            }
+            catch (ArgumentOutOfRangeException argOutOfRangeEx)
+            {
+                throw new CustomArgumentOutOfRangeException(argOutOfRangeEx.Message, argOutOfRangeEx);
+            }
+            catch (ArgumentException argEx)
+            {
+                throw new CustomArgumentException(argEx.Message, argEx);
+            }
+            catch (NotSupportedException notSuppEx)
+            {
+                throw new CustomNotSupportedException(notSuppEx.Message, notSuppEx);
+            }
+            catch (System.Security.SecurityException securityEx)
+            {
+                throw new CustomSecurityException(securityEx.Message, securityEx);
+            }
+            catch (FileNotFoundException fileNotFoundEx)
+            {
+                throw new CustomFileNotFoundException(fileNotFoundEx.Message, fileNotFoundEx);
+            }
+            catch (DirectoryNotFoundException directoryNotFoundEx)
+            {
+                throw new CustomDirectoryNotFoundException(directoryNotFoundEx.Message, directoryNotFoundEx);
+            }
+            catch (PathTooLongException pathTooLongEx)
+            {
+                throw new CustomPathTooLongException(pathTooLongEx.Message, pathTooLongEx);
+            }
+            catch (IOException ioEx)
+            {
+                throw new CustomIOException(ioEx.Message, ioEx);
+            }
+            catch (System.Runtime.InteropServices.ExternalException externalEx)
+            {
+                throw new CustomExternalException(externalEx.Message, externalEx);
+            }
+            catch (OutOfMemoryException outOfMemoryEx)
+            {
+                throw new CustomOutOfMemoryException(outOfMemoryEx.Message, outOfMemoryEx);
+            }
+            catch (Exception ex)
+            {
+                throw new CustomBaseException(ex.Message, ex);
+            }
+
         }
 
         private void ValidateCropDimensions(Rectangle rectangle, Bitmap bitmap)

@@ -1,4 +1,5 @@
-﻿using ImageConverter.Interfaces;
+﻿using ImageConverter.Exceptions;
+using ImageConverter.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,25 +15,72 @@ namespace ImageConverter.Strategies.Resize
     {
         protected internal Size wantedSize = new Size();
 
-        public KeepAspectStrategy(Parameter parameter)
+        public KeepAspectStrategy(int width, int height)
         {
-            ValidateWidthHeight(parameter.Width, parameter.Height);
-            this.wantedSize.Width = parameter.Width;
-            this.wantedSize.Height = parameter.Height;
+            ValidateWidthHeight(width, height);
+            this.wantedSize.Width = width;
+            this.wantedSize.Height = height;
         }
 
-        public void Start(string srcPath, string destPath)
+        public void Start(string sourcePath, string destinationPath)
         {
-            Image originalImage;
-            using (FileStream ifs = new FileStream(srcPath, FileMode.Open))
+            try
             {
-                originalImage = Image.FromStream(ifs);
+                Image originalImage;
+                using (FileStream ifs = new FileStream(sourcePath, FileMode.Open))
+                {
+                    originalImage = Image.FromStream(ifs);
+                }
+                CalculateAspectRatio(originalImage);
+                Image resizedImage = ResizeImage(originalImage, this.wantedSize);
+                using (FileStream ofs = new FileStream(destinationPath, FileMode.CreateNew))
+                {
+                    resizedImage.Save(ofs, originalImage.RawFormat);
+                }
             }
-            CalculateAspectRatio(originalImage);
-            Image resizedImage = ResizeImage(originalImage, this.wantedSize);
-            using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
+            catch (ArgumentNullException argNullEx)
             {
-                resizedImage.Save(ofs, originalImage.RawFormat);
+                throw new CustomArgumentNullException(argNullEx.Message, argNullEx);
+            }
+            catch (ArgumentOutOfRangeException argOutOfRangeEx)
+            {
+                throw new CustomArgumentOutOfRangeException(argOutOfRangeEx.Message, argOutOfRangeEx);
+            }
+            catch (ArgumentException argEx)
+            {
+                throw new CustomArgumentException(argEx.Message, argEx);
+            }
+            catch (NotSupportedException notSuppEx)
+            {
+                throw new CustomNotSupportedException(notSuppEx.Message, notSuppEx);
+            }
+            catch (System.Security.SecurityException securityEx)
+            {
+                throw new CustomSecurityException(securityEx.Message, securityEx);
+            }
+            catch (FileNotFoundException fileNotFoundEx)
+            {
+                throw new CustomFileNotFoundException(fileNotFoundEx.Message, fileNotFoundEx);
+            }
+            catch (DirectoryNotFoundException directoryNotFoundEx)
+            {
+                throw new CustomDirectoryNotFoundException(directoryNotFoundEx.Message, directoryNotFoundEx);
+            }
+            catch (PathTooLongException pathTooLongEx)
+            {
+                throw new CustomPathTooLongException(pathTooLongEx.Message, pathTooLongEx);
+            }
+            catch (IOException ioEx)
+            {
+                throw new CustomIOException(ioEx.Message, ioEx);
+            }
+            catch (System.Runtime.InteropServices.ExternalException externalEx)
+            {
+                throw new CustomExternalException(externalEx.Message, externalEx);
+            }
+            catch (Exception ex)
+            {
+                throw new CustomBaseException(ex.Message, ex);
             }
         }
 
