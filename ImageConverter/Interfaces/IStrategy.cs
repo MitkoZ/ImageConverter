@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ImageConverter.Interfaces
 {
-    public interface IStrategy
+    internal interface IStrategy
     {
         void Start(string srcPath, string destPath);
     }
