@@ -1,4 +1,5 @@
-﻿using ImageConverter.Interfaces;
+﻿using ImageConverter.Exceptions;
+using ImageConverter.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,27 +15,85 @@ namespace ImageConverter.Strategies.Resize
     {
         protected internal Size wantedSize = new Size();
 
-        public SkewStrategy(Parameter parameter)
+        public SkewStrategy(int width, int height)
         {
-            ValidateWidthHeight(parameter.Width, parameter.Height);
-            this.wantedSize.Width = parameter.Width;
-            this.wantedSize.Height = parameter.Height;
+            try
+            {
+                ValidateWidthHeight(width, height);
+            }
+            catch (ArgumentOutOfRangeException argOutOfRangeException)
+            {
+                throw new CustomArgumentOutOfRangeException(argOutOfRangeException.Message, argOutOfRangeException);
+            }
+            catch (Exception ex)
+            {
+                throw new CustomBaseException(ex.Message, ex);
+            }
+            this.wantedSize.Width = width;
+            this.wantedSize.Height = height;
         }
 
         public void Start(string srcPath, string destPath)
         {
-            using (FileStream ifs = new FileStream(srcPath, FileMode.Open))
+            try
             {
-                Image originalImage = Image.FromStream(ifs);
-                Image resizedImage = ResizeImage(originalImage, this.wantedSize);
-                using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
+                using (FileStream ifs = new FileStream(srcPath, FileMode.Open))
                 {
-                    resizedImage.Save(ofs, originalImage.RawFormat);
+                    Image originalImage = Image.FromStream(ifs);
+                    Image resizedImage = ResizeImage(originalImage, this.wantedSize);
+                    using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
+                    {
+                        resizedImage.Save(ofs, originalImage.RawFormat);
+                    }
                 }
+            }
+            catch (ArgumentNullException argNullEx)
+            {
+                throw new CustomArgumentNullException(argNullEx.Message, argNullEx);
+            }
+            catch (ArgumentOutOfRangeException argOutOfRangeEx)
+            {
+                throw new CustomArgumentOutOfRangeException(argOutOfRangeEx.Message, argOutOfRangeEx);
+            }
+            catch (ArgumentException argEx)
+            {
+                throw new CustomArgumentException(argEx.Message, argEx);
+            }
+            catch (NotSupportedException notSuppEx)
+            {
+                throw new CustomNotSupportedException(notSuppEx.Message, notSuppEx);
+            }
+            catch (System.Security.SecurityException securityEx)
+            {
+                throw new CustomSecurityException(securityEx.Message, securityEx);
+            }
+            catch (FileNotFoundException fileNotFoundEx)
+            {
+                throw new CustomFileNotFoundException(fileNotFoundEx.Message, fileNotFoundEx);
+            }
+            catch (DirectoryNotFoundException directoryNotFoundEx)
+            {
+                throw new CustomDirectoryNotFoundException(directoryNotFoundEx.Message, directoryNotFoundEx);
+            }
+            catch (PathTooLongException pathTooLongEx)
+            {
+                throw new CustomPathTooLongException(pathTooLongEx.Message, pathTooLongEx);
+            }
+            catch (IOException ioEx)
+            {
+                throw new CustomIOException(ioEx.Message, ioEx);
+            }
+            catch (System.Runtime.InteropServices.ExternalException externalEx)
+            {
+                throw new CustomExternalException(externalEx.Message, externalEx);
+            }
+            catch (Exception ex)
+            {
+                throw new CustomBaseException(ex.Message, ex);
             }
         }
 
-        protected internal Image ResizeImage(Image originalImage, Size wantedSize)
+        private Image ResizeImage(Image originalImage, Size wantedSize)
         {
             Bitmap bitmap = new Bitmap(wantedSize.Width, wantedSize.Height);
             Graphics graphic = Graphics.FromImage((Image)bitmap);
