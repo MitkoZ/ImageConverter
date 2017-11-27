@@ -1,5 +1,5 @@
-﻿using ImageConverter.Exceptions;
-using ImageConverter.Interfaces;
+﻿using PrimeHolding.ImageConverter.Exceptions;
+using PrimeHolding.ImageConverter.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.Strategies.Convert
+namespace PrimeHolding.ImageConverter.Strategies.Convert
 {
-    internal class ToJPGStrategy : IStrategy
+    internal class ToPNGStrategy : IStrategy
     {
         public void Start(string sourcePath, string destinationPath)
         {
@@ -22,7 +22,7 @@ namespace ImageConverter.Strategies.Convert
                     using (FileStream outputFileStream = new FileStream(destinationPath, FileMode.CreateNew))
                     {
                         Image outputImage = Image.FromStream(inputFileStream);
-                        outputImage.Save(outputFileStream, ImageFormat.Jpeg);
+                        outputImage.Save(outputFileStream, ImageFormat.Png);
                     }
                 }
             }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.Interfaces
+namespace PrimeHolding.ImageConverter.Interfaces
 {
-    internal interface IContext
+    internal interface IStrategy
     {
-        void ExecuteStrategy();
+        void Start(string srcPath, string destPath);
     }
 }
