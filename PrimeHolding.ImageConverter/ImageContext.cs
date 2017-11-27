@@ -1,13 +1,13 @@
 ﻿using System;
-using ImageConverter.Interfaces;
+using PrimeHolding.ImageConverter.Interfaces;
 using System.Security;
 using System.IO;
-using ImageConverter.Strategies.Convert;
-using ImageConverter.Strategies.Resize;
+using PrimeHolding.ImageConverter.Strategies.Convert;
+using PrimeHolding.ImageConverter.Strategies.Resize;
 using System.ComponentModel;
-using ImageConverter.Exceptions;
+using PrimeHolding.ImageConverter.Exceptions;
 
-namespace ImageConverter
+namespace PrimeHolding.ImageConverter
 {
     public class ImageContext : IContext
     {
