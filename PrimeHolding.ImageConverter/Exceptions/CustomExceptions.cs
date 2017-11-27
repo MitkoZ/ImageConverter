@@ -8,7 +8,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.Exceptions
+namespace PrimeHolding.ImageConverter.Exceptions
 {
     [Serializable]//TODO: change to public and each exception in separate file
     public class CustomBaseException : Exception

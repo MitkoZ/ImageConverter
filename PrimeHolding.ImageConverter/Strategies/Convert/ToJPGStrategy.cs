@@ -1,17 +1,17 @@
-﻿using ImageConverter.Interfaces;
+﻿using PrimeHolding.ImageConverter.Exceptions;
+using PrimeHolding.ImageConverter.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
-using System.Drawing.Imaging;
-using ImageConverter.Exceptions;
 
-namespace ImageConverter.Strategies.Convert
+namespace PrimeHolding.ImageConverter.Strategies.Convert
 {
-    internal class ToGIFStrategy : IStrategy
+    internal class ToJPGStrategy : IStrategy
     {
         public void Start(string sourcePath, string destinationPath)
         {
@@ -22,7 +22,7 @@ namespace ImageConverter.Strategies.Convert
                     using (FileStream outputFileStream = new FileStream(destinationPath, FileMode.CreateNew))
                     {
                         Image outputImage = Image.FromStream(inputFileStream);
-                        outputImage.Save(outputFileStream, ImageFormat.Gif);
+                        outputImage.Save(outputFileStream, ImageFormat.Jpeg);
                     }
                 }
             }

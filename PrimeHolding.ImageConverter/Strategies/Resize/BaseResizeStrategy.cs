@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.Strategies.Resize
+namespace PrimeHolding.ImageConverter.Strategies.Resize
 {
     internal abstract class BaseResizeStrategy
     {
