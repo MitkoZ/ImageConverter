@@ -1,10 +1,10 @@
-﻿using ImageConverter.Interfaces;
+﻿using PrimeHolding.ImageConverter.Interfaces;
 using System.Drawing;
 using System.IO;
 using System;
-using ImageConverter.Exceptions;
+using PrimeHolding.ImageConverter.Exceptions;
 
-namespace ImageConverter.Strategies.Resize
+namespace PrimeHolding.ImageConverter.Strategies.Resize
 {
     internal class CropStrategy : IStrategy
     {

@@ -1,5 +1,5 @@
-﻿using ImageConverter.Exceptions;
-using ImageConverter.Interfaces;
+﻿using PrimeHolding.ImageConverter.Exceptions;
+using PrimeHolding.ImageConverter.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,33 +9,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageConverter.Strategies.Resize
+namespace PrimeHolding.ImageConverter.Strategies.Resize
 {
-    internal class KeepAspectStrategy : BaseResizeStrategy, IStrategy
+    internal class SkewStrategy : BaseResizeStrategy, IStrategy
     {
         protected internal Size wantedSize = new Size();
 
-        public KeepAspectStrategy(int width, int height)
+        public SkewStrategy(int width, int height)
         {
-            ValidateWidthHeight(width, height);
+            try
+            {
+                ValidateWidthHeight(width, height);
+            }
+            catch (ArgumentOutOfRangeException argOutOfRangeException)
+            {
+                throw new CustomArgumentOutOfRangeException(argOutOfRangeException.Message, argOutOfRangeException);
+            }
+            catch (Exception ex)
+            {
+                throw new CustomBaseException(ex.Message, ex);
+            }
             this.wantedSize.Width = width;
             this.wantedSize.Height = height;
         }
 
-        public void Start(string sourcePath, string destinationPath)
+        public void Start(string srcPath, string destPath)
         {
             try
             {
-                Image originalImage;
-                using (FileStream ifs = new FileStream(sourcePath, FileMode.Open))
+                using (FileStream ifs = new FileStream(srcPath, FileMode.Open))
                 {
-                    originalImage = Image.FromStream(ifs);
-                }
-                CalculateAspectRatio(originalImage);
-                Image resizedImage = ResizeImage(originalImage, this.wantedSize);
-                using (FileStream ofs = new FileStream(destinationPath, FileMode.CreateNew))
-                {
-                    resizedImage.Save(ofs, originalImage.RawFormat);
+                    Image originalImage = Image.FromStream(ifs);
+                    Image resizedImage = ResizeImage(originalImage, this.wantedSize);
+                    using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
+                    {
+                        resizedImage.Save(ofs, originalImage.RawFormat);
+                    }
                 }
             }
             catch (ArgumentNullException argNullEx)
@@ -84,25 +93,7 @@ namespace ImageConverter.Strategies.Resize
             }
         }
 
-        private void CalculateAspectRatio(Image originalImage)
-        {
-            int sourceWidth = originalImage.Width;
-            int sourceHeight = originalImage.Height;
-
-            float nPercent = 0;
-            float nPercentW = 0;
-            float nPercentH = 0;
-
-            nPercentW = ((float)wantedSize.Width / (float)sourceWidth);
-            nPercentH = ((float)wantedSize.Height / (float)sourceHeight);
-
-            nPercent = (nPercentH < nPercentW) ? nPercentH : nPercentW;
-
-            this.wantedSize.Width = (int)(sourceWidth * nPercent);
-            this.wantedSize.Height = (int)(sourceHeight * nPercent);
-        }
-
-        protected internal Image ResizeImage(Image originalImage, Size wantedSize)
+        private Image ResizeImage(Image originalImage, Size wantedSize)
         {
             Bitmap bitmap = new Bitmap(wantedSize.Width, wantedSize.Height);
             Graphics graphic = Graphics.FromImage((Image)bitmap);
