@@ -11,6 +11,9 @@ using PrimeHolding.ImageConverter.Exceptions;
 
 namespace PrimeHolding.ImageConverter.Strategies.Convert
 {
+    /// <summary>
+    /// A strategy that converts an image to gif format
+    /// </summary>
     internal class ToGIFStrategy : IStrategy
     {
         public void Start(string sourcePath, string destinationPath)

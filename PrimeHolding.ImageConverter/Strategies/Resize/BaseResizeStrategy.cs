@@ -9,6 +9,11 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
 {
     internal abstract class BaseResizeStrategy
     {
+        /// <summary>
+        /// Validate user's input for the new image
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         protected static void ValidateWidthHeight(int width, int height)
         {
             if (width < 1)
