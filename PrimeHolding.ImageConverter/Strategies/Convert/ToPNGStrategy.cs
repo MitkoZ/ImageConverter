@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace PrimeHolding.ImageConverter.Strategies.Convert
 {
+    /// <summary>
+    /// A strategy that converts an image to png format
+    /// </summary>
     internal class ToPNGStrategy : IStrategy
     {
         public void Start(string sourcePath, string destinationPath)
