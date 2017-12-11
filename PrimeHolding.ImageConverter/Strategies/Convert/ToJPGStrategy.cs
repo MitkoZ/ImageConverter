@@ -10,7 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PrimeHolding.ImageConverter.Strategies.Convert
-{
+{   
+    /// <summary>
+     /// A strategy that converts an image to jpg format
+     /// </summary>
     internal class ToJPGStrategy : IStrategy
     {
         public void Start(string sourcePath, string destinationPath)

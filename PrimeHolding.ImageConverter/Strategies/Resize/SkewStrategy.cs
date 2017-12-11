@@ -11,10 +11,21 @@ using System.Threading.Tasks;
 
 namespace PrimeHolding.ImageConverter.Strategies.Resize
 {
+    /// <summary>
+    /// A strategy that resizes an image to the given width and height without keeping the old image's proportions
+    /// </summary>
     internal class SkewStrategy : BaseResizeStrategy, IStrategy
     {
+        /// <summary>
+        /// Get or set the new size of the image
+        /// </summary>
         protected internal Size wantedSize = new Size();
 
+        /// <summary>
+        /// Setting the wanted width and height of the new image
+        /// </summary>
+        /// <param name="width">The new width</param>
+        /// <param name="height">The new height</param>
         public SkewStrategy(int width, int height)
         {
             try
@@ -93,6 +104,12 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
             }
         }
 
+        /// <summary>
+        /// Resizes the image
+        /// </summary>
+        /// <param name="originalImage">The source image that should be resized</param>
+        /// <param name="wantedSize">The size that the new image should be</param>
+        /// <returns>The resized image</returns>
         private Image ResizeImage(Image originalImage, Size wantedSize)
         {
             Bitmap bitmap = new Bitmap(wantedSize.Width, wantedSize.Height);
