@@ -6,10 +6,38 @@ using PrimeHolding.ImageConverter.Exceptions;
 
 namespace PrimeHolding.ImageConverter.Strategies.Resize
 {
+    /// <summary>
+    /// A strategy that crops an image
+    /// </summary>
     internal class CropStrategy : IStrategy
     {
-        private int x, y, width, height;
+        /// <summary>
+        /// Get or set the x starting coordinate for the image cropping
+        /// </summary>
+        private int x;
 
+        /// <summary>
+        /// Get or set the y starting coordinate for the image cropping
+        /// </summary>
+        private int y;
+
+        /// <summary>
+        /// Get or set the width of the cropped image
+        /// </summary>
+        private int width;
+
+        /// <summary>
+        /// Get or set the height of the cropped image
+        /// </summary>
+        private int height;
+
+        /// <summary>
+        /// Setting the necessary paremeters for the crop strategy
+        /// </summary>
+        /// <param name="x">X starting coordinate of the image cropping</param>
+        /// <param name="y">Y starting coordinate of the image cropping</param>
+        /// <param name="width">The cropped width of the image (this will be the width of the new image)</param>
+        /// <param name="height">The cropped height of the image (this will be the width of the new image)</param>
         public CropStrategy(int x, int y, int width, int height)
         {
             this.x = x;
@@ -85,6 +113,11 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
 
         }
 
+        /// <summary>
+        /// Validation of the user's input parameters
+        /// </summary>
+        /// <param name="rectangle">User's input container</param>
+        /// <param name="bitmap">Source image container</param>
         private void ValidateCropDimensions(Rectangle rectangle, Bitmap bitmap)
         {
             if (rectangle.X < 0)

@@ -11,10 +11,21 @@ using System.Threading.Tasks;
 
 namespace PrimeHolding.ImageConverter.Strategies.Resize
 {
+    /// <summary>
+    /// A strategy that resizes an image keeping the proportions of the given image
+    /// </summary>
     internal class KeepAspectStrategy : BaseResizeStrategy, IStrategy
     {
+        /// <summary>
+        /// Get or set the new size of the image
+        /// </summary>
         protected internal Size wantedSize = new Size();
 
+        /// <summary>
+        /// Setting the wanted width and height of the new image
+        /// </summary>
+        /// <param name="width">The new width</param>
+        /// <param name="height">The new height</param>
         public KeepAspectStrategy(int width, int height)
         {
             ValidateWidthHeight(width, height);
@@ -84,6 +95,10 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
             }
         }
 
+        /// <summary>
+        /// Calculates the new width and height of the image
+        /// </summary>
+        /// <param name="originalImage">Container of the source image</param>
         private void CalculateAspectRatio(Image originalImage)
         {
             int sourceWidth = originalImage.Width;
@@ -102,6 +117,12 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
             this.wantedSize.Height = (int)(sourceHeight * nPercent);
         }
 
+        /// <summary>
+        /// Resizes the image
+        /// </summary>
+        /// <param name="originalImage">The source image that should be resized</param>
+        /// <param name="wantedSize">The size that the new image should be</param>
+        /// <returns>The resized image</returns>
         protected internal Image ResizeImage(Image originalImage, Size wantedSize)
         {
             Bitmap bitmap = new Bitmap(wantedSize.Width, wantedSize.Height);
