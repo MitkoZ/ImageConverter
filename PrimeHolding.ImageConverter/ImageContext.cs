@@ -52,7 +52,7 @@ namespace PrimeHolding.ImageConverter
         private int height;
 
         /// <summary>
-        /// Provides a common interface for setting the necessary parameters when converting images to various formats
+        /// Creates an instance of ImageContext for converting between various image formats
         /// </summary>
         /// <param name="sourcePath">Source path of the image</param>
         /// <param name="destinationPath">Destination path of the new image</param>
@@ -65,7 +65,7 @@ namespace PrimeHolding.ImageConverter
         }
 
         /// <summary>
-        /// Provides a common interface for setting the necessary parameters when manipulating image size
+        /// Creates an instance of ImageContext for cropping images
         /// </summary>
         /// <param name="sourcePath">Source path of the image</param>
         /// <param name="destinationPath">Destination path of the new image</param>
@@ -86,7 +86,7 @@ namespace PrimeHolding.ImageConverter
         }
 
         /// <summary>
-        /// Provides a common interface for setting the necessary parameters when manipulating image size
+        /// Creates an instance of ImageContext for resizing images
         /// </summary>
         /// <param name="sourcePath">Source path of the image</param>
         /// <param name="destionationPath">Destination path of the new image</param>
