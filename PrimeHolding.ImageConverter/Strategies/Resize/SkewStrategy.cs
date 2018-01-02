@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,33 +28,33 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
         /// </summary>
         /// <param name="width">The new width</param>
         /// <param name="height">The new height</param>
+        /// <exception cref="InvalidResizeSizeException">The image's new width or height is invalid. (below 0)</exception>
         public SkewStrategy(int width, int height)
         {
-            try
-            {
-                ValidateWidthHeight(width, height);
-            }
-            catch (ArgumentOutOfRangeException argOutOfRangeException)
-            {
-                throw new CustomArgumentOutOfRangeException(argOutOfRangeException.Message, argOutOfRangeException);
-            }
-            catch (Exception ex)
-            {
-                throw new CustomBaseException(ex.Message, ex);
-            }
+            ValidateWidthHeight(width, height);
             this.wantedSize.Width = width;
             this.wantedSize.Height = height;
         }
 
-        public void Start(string srcPath, string destPath)
+        /// <exception cref="InvalidResizeSizeException">The image's new width or height is invalid. (below 0)</exception>
+        /// <exception cref="InvalidPathException">Path is null or invalid</exception>
+        /// <exception cref="InvalidImageFormatException">Path does not point to a supported image format</exception>
+        /// <exception cref="UnathorizedAccessException">No permission to access this file/directory.</exception>
+        /// <exception cref="WrongSaveImageFormatException">Image was saved with the wrong image format.</exception>
+        /// <exception cref="GenericException">Initializing a new instance of the Bitmap class failed, or image has an indexed pixel format or its format is undefined</exception>
+        /// <exception cref="FileNotFoundException">The file specified by <paramref name="sourcePath"/> or <paramref name="destinationPath"/> does not exist</exception>
+        /// <exception cref="IOException">The file specified by <paramref name="destinationPath"/> already exists</exception>
+        /// <exception cref="DirectoryNotFoundException">The specified path is invalid, such as being on an unmapped drive.</exception>
+        /// <exception cref="PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+        public void Start(string sourcePath, string destinationPath)
         {
             try
             {
-                using (FileStream ifs = new FileStream(srcPath, FileMode.Open))
+                using (FileStream ifs = new FileStream(sourcePath, FileMode.Open))
                 {
                     Image originalImage = Image.FromStream(ifs);
                     Image resizedImage = ResizeImage(originalImage, this.wantedSize);
-                    using (FileStream ofs = new FileStream(destPath, FileMode.CreateNew))
+                    using (FileStream ofs = new FileStream(destinationPath, FileMode.CreateNew))
                     {
                         resizedImage.Save(ofs, originalImage.RawFormat);
                     }
@@ -60,47 +62,34 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
             }
             catch (ArgumentNullException argNullEx)
             {
-                throw new CustomArgumentNullException(argNullEx.Message, argNullEx);
-            }
-            catch (ArgumentOutOfRangeException argOutOfRangeEx)
-            {
-                throw new CustomArgumentOutOfRangeException(argOutOfRangeEx.Message, argOutOfRangeEx);
+                throw new InvalidPathException(argNullEx.Message, argNullEx);
             }
             catch (ArgumentException argEx)
             {
-                throw new CustomArgumentException(argEx.Message, argEx);
+                if (argEx.Message == "Parameter is not valid.")
+                {
+                    throw new InvalidImageFormatException("The provided path does not point to a supported image format", argEx);
+                }
+                else
+                {
+                    throw new InvalidPathException(argEx.Message, argEx);
+                }
             }
             catch (NotSupportedException notSuppEx)
             {
-                throw new CustomNotSupportedException(notSuppEx.Message, notSuppEx);
+                throw new InvalidPathException("The provided path is invalid", notSuppEx);
             }
-            catch (System.Security.SecurityException securityEx)
+            catch (SecurityException)
             {
-                throw new CustomSecurityException(securityEx.Message, securityEx);
+                throw new UnathorizedAccessException("You don't have the required permission to access this file/directory.");
             }
-            catch (FileNotFoundException fileNotFoundEx)
+            catch (ExternalException)
             {
-                throw new CustomFileNotFoundException(fileNotFoundEx.Message, fileNotFoundEx);
-            }
-            catch (DirectoryNotFoundException directoryNotFoundEx)
-            {
-                throw new CustomDirectoryNotFoundException(directoryNotFoundEx.Message, directoryNotFoundEx);
-            }
-            catch (PathTooLongException pathTooLongEx)
-            {
-                throw new CustomPathTooLongException(pathTooLongEx.Message, pathTooLongEx);
-            }
-            catch (IOException ioEx)
-            {
-                throw new CustomIOException(ioEx.Message, ioEx);
-            }
-            catch (System.Runtime.InteropServices.ExternalException externalEx)
-            {
-                throw new CustomExternalException(externalEx.Message, externalEx);
+                throw new WrongSaveImageFormatException("The image was saved with the wrong image format.");
             }
             catch (Exception ex)
             {
-                throw new CustomBaseException(ex.Message, ex);
+                throw new GenericException(ex.Message, ex);
             }
         }
 
@@ -110,6 +99,8 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
         /// <param name="originalImage">The source image that should be resized</param>
         /// <param name="wantedSize">The size that the new image should be</param>
         /// <returns>The resized image</returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
         private Image ResizeImage(Image originalImage, Size wantedSize)
         {
             Bitmap bitmap = new Bitmap(wantedSize.Width, wantedSize.Height);
