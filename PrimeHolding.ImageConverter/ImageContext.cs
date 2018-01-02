@@ -9,6 +9,7 @@ using PrimeHolding.ImageConverter.Exceptions;
 
 namespace PrimeHolding.ImageConverter
 {
+    /// <exception cref="InvalidImageOperation">The provided image operation is not supported</exception>
     public class ImageContext : IContext
     {
         /// <summary>
@@ -74,10 +75,10 @@ namespace PrimeHolding.ImageConverter
         /// <param name="y">Y starting coordinate for the image operation</param>
         /// <param name="width">The width of the new image</param>
         /// <param name="height">The height of the new image</param>
-        public ImageContext(string sourcePath, string destionationPath, string imageOperation, int x, int y, int width, int height)
+        public ImageContext(string sourcePath, string destinationPath, string imageOperation, int x, int y, int width, int height)
         {
             this.sourcePath = sourcePath;
-            this.destinationPath = destionationPath;
+            this.destinationPath = destinationPath;
             this.imageOperation = imageOperation;
             this.x = x;
             this.y = y;
@@ -89,14 +90,14 @@ namespace PrimeHolding.ImageConverter
         /// Creates an instance of ImageContext for resizing images
         /// </summary>
         /// <param name="sourcePath">Source path of the image</param>
-        /// <param name="destionationPath">Destination path of the new image</param>
+        /// <param name="destinationPath">Destination path of the new image</param>
         /// <param name="imageOperation">Image operation type when manipulating image size. Valid types: Skew, KeepAspect</param>
         /// <param name="width">The width of the new image</param>
         /// <param name="height">The height of the new image</param>
-        public ImageContext(string sourcePath, string destionationPath, string imageOperation, int width, int height)
+        public ImageContext(string sourcePath, string destinationPath, string imageOperation, int width, int height)
         {
             this.sourcePath = sourcePath;
-            this.destinationPath = destionationPath;
+            this.destinationPath = destinationPath;
             this.imageOperation = imageOperation;
             this.width = width;
             this.height = height;
@@ -128,7 +129,7 @@ namespace PrimeHolding.ImageConverter
                     this.strategy = new KeepAspectStrategy(this.width, this.height);
                     break;
                 default:
-                    throw new CustomInvalidEnumArgumentException("Reached default - this should not happen");
+                    throw new InvalidImageOperation("The provided image operation is not supported");
             }
             strategy.Start(this.sourcePath, this.destinationPath);
         }

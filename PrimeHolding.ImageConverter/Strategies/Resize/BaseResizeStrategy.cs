@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrimeHolding.ImageConverter.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,15 +15,16 @@ namespace PrimeHolding.ImageConverter.Strategies.Resize
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
+        /// <exception cref="InvalidResizeSizeException"></exception>
         protected static void ValidateWidthHeight(int width, int height)
         {
             if (width < 1)
             {
-                throw new ArgumentOutOfRangeException("width", "The new width of the image should be greater than 0");
+                throw new InvalidResizeSizeException("The new width of the image should be greater than 0");
             }
             else if (height < 1)
             {
-                throw new ArgumentOutOfRangeException("height", "The new height of the image should be greater than 0");
+                throw new InvalidResizeSizeException("The new height of the image should be greater than 0");
             }
         }
     }
