@@ -21,6 +21,8 @@ namespace UserInterface
         private string fileName;
         private int width;
         private int height;
+        private int x;
+        private int y;
 
 
         public ImageConverter()
@@ -31,18 +33,57 @@ namespace UserInterface
         private void button1_Click(object sender, EventArgs e)
         {
             //buttona submit
-            if ((checkBox1.Checked || checkBox2.Checked || checkBox3.Checked) && (pathFile != null && newPath != null)) { 
+            if ((checkBox1.Checked || checkBox2.Checked || checkBox3.Checked)) { 
             ImageContext ic = new ImageContext(pathFile, newPath, convertType);
-            ic.ExecuteStrategy();
-                MessageBox.Show("Everything seems to be okay. The new file with specified type is saved", "Completed",
-                MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                try
+                {
+                    ic.ExecuteStrategy();
+                    MessageBox.Show("Everything seems to be okay. The new file with specified width and height is saved", "Completed",
+                    MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                catch (InvalidPathException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (InvalidImageFormatException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (UnathorizedAccessException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (WrongSaveImageFormatException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (FileNotFoundException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (DirectoryNotFoundException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (PathTooLongException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (IOException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
             }
-            else
-            {
-                MessageBox.Show("File paths or convert types are not selected", "Processing error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+           
 
         }
 
@@ -168,22 +209,35 @@ namespace UserInterface
                 checkBox6.Checked = false;
                 textBox3.Visible = true;
                 textBox4.Visible = true;
+                textBox5.Visible = true;
+                textBox6.Visible = true;
                 label5.Visible = true;
                 label6.Visible = true;
                 label7.Visible = true;
                 label8.Visible = true;
+                label9.Visible = true;
+                label10.Visible = true;
+                label11.Visible = true;
+                label12.Visible = true;
                 this.convertType = "Crop";
                 button4.Text = "Crop";
+                fileName = "Crop_" + fileName;
                
             }
             else
             {
                 textBox3.Visible = false;
                 textBox4.Visible = false;
+                textBox5.Visible = false;
+                textBox6.Visible = false;
                 label5.Visible = false;
                 label6.Visible = false;
                 label7.Visible = false;
                 label8.Visible = false;
+                label9.Visible = false;
+                label10.Visible = false;
+                label11.Visible = false;
+                label12.Visible = false;
             }
         }
 
@@ -201,6 +255,7 @@ namespace UserInterface
                 label8.Visible = true;
                 this.convertType = "Skew";
                 button4.Text = "Skew";
+                fileName = "Skew_" + fileName;
             }
             else
             {
@@ -227,6 +282,7 @@ namespace UserInterface
                 label8.Visible = true;
                 this.convertType = "KeepAspect";
                 button4.Text = "KeepAspect";
+                fileName = "KeepAspect_" + fileName;
 
             }
             else
@@ -242,33 +298,80 @@ namespace UserInterface
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if ((checkBox4.Checked || checkBox5.Checked || checkBox6.Checked) && pathFile != null)
+            if ((checkBox4.Checked || checkBox5.Checked || checkBox6.Checked))
             {
-                ImageContext ic = new ImageContext(pathFile, newPath, convertType, width, height);
-                ic.ExecuteStrategy();
-                MessageBox.Show("Everything seems to be okay. The new file with specified width and height is saved", "Completed",
-                MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                ImageContext ic = new ImageContext(pathFile, newPath, convertType, x, y, width, height);
+                try
+                {
+                    ic.ExecuteStrategy();
+                    MessageBox.Show("Everything seems to be okay. The new file with specified width and height is saved", "Completed",
+                    MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                catch (InvalidPathException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (InvalidImageFormatException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (UnathorizedAccessException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (WrongSaveImageFormatException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (FileNotFoundException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (DirectoryNotFoundException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (PathTooLongException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (IOException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (InvalidCropDimensionsException exc)
+                {
+                    MessageBox.Show(exc.Message, "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+
+
 
             }
-            else
-            {
-                MessageBox.Show("Specified width and height are not set or option is not selected", "Processing error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-             
-            }
+            
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-
-            int width = int.Parse(textBox3.Text);
-            if (width != 0)
+            int width;
+            bool isInt = int.TryParse(textBox3.Text, out width);
+            
+            if (isInt)
             {
                 this.width = width;
             }
             else
             {
-                MessageBox.Show("Width cannot be null", "Processing error",
+                MessageBox.Show("You have to enter a digit", "Processing error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -277,14 +380,16 @@ namespace UserInterface
 
         private void textBox4_TextChanged(object sender, EventArgs e)
         {
-            int height = int.Parse(textBox3.Text);
-            if (height != 0)
+            int height;
+            bool isInt = int.TryParse(textBox3.Text, out height);
+
+            if (isInt)
             {
                 this.height = height;
             }
             else
             {
-                MessageBox.Show("Height cannot be null", "Processing error",
+                MessageBox.Show("You have to enter a digit", "Processing error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -292,6 +397,39 @@ namespace UserInterface
         private void label8_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+            int x = 0;
+            bool isInt = int.TryParse(textBox5.Text, out x);
+
+            if (isInt)
+            {
+                this.x = x;
+            }
+            else
+            {
+                MessageBox.Show("You have to enter a digit", "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+            int y = 0;
+            bool isInt = int.TryParse(textBox6.Text, out x);
+
+            if (isInt)
+            {
+                this.y = y;
+            }
+            else
+            {
+                MessageBox.Show("You have to enter a digit", "Processing error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
